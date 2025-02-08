@@ -15,8 +15,32 @@ export default () => {
       } 
     })
   }
-  
+
+  // getting list of blog posts function
+  const getPosts = async () => {    
+    return await useFetch(`${APIURL}/blogs`, {
+     headers: {
+      'Accept': 'application/json',
+      'x-key': APIKEY   
+     }
+    })
+  }
+
+
+  // delete blog post by id ==> function
+  const deletePost = async (id) => {
+    await $fetch(`${APIURL}/blogs/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'x-key': APIKEY
+      }
+    })
+  }
+
   return {
-    addPost
+    addPost,
+    getPosts,
+    deletePost
   }
 }
