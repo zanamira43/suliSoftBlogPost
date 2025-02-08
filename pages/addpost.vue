@@ -1,5 +1,4 @@
 <script setup>
-const router = useRouter();
 const title = ref("");
 const content = ref("");
 const status = ref("");
@@ -7,6 +6,8 @@ const author_id = ref(0);
 
 // calling  authors composables function
 const { data } = await useFetchAuthors().getAuthors();
+
+const { validateError } = await useFetchPost();
 
 // add post function
 const addPost = async () => {
@@ -17,14 +18,15 @@ const addPost = async () => {
     author_id: author_id.value,
   };
 
-  // calling add post function from composables
+  // calling add post function from composabless
   await useFetchPost().addPost(post);
-  router.push("/");
 
   title.value = "";
   content.value = "";
   status.value = "";
   author_id.value = "";
+
+  // router.push("/"); // redirect to home page
 };
 </script>
 
@@ -107,6 +109,11 @@ const addPost = async () => {
             <span class="ml-2">Unpublish</span>
           </label>
         </div>
+      </div>
+
+      <div class="mb-4 flex flex-row justify-center items-center" v-if="validateError">
+        <!-- <ErrorMessage :errorMessage="validateError" class="mt-2" /> -->
+        <p class="text-red-500 text-sm mt-2">{{ validateError }}</p>
       </div>
 
       <!-- Submit Button -->
