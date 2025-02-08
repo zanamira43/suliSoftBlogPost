@@ -4,9 +4,9 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   runtimeConfig: {
-    API_KEY: process.env.Blog_POST_API_KEY,
     public:{
-      API_URL: process.env.Blog_POST_API_URL
+      API_KEY: process.env.Blog_API_KEY,
+      API_URL: process.env.Blog_API_URL
     },
   },
 
