@@ -1,24 +1,44 @@
 <script setup>
 const router = useRouter();
+const route = useRoute();
+const id = route.params.id;
+
+//
 const title = ref("");
 const content = ref("");
 const status = ref("");
 const author_id = ref(0);
 
 // calling  authors composables function
-const { data } = await useFetchAuthors().getAuthors();
+const { data: authors } = await useFetchAuthors().getAuthors();
+
+// callling post composables function
+const { data: post } = await useFetchPost().getPost(id);
+
+const postauthor = computed(() => {
+  return (
+    authors.value.data.find((author) =>
+      author.name.toLowerCase().includes(post.value.author.toLowerCase())
+    ) || null
+  );
+});
+
+title.value = post.value.title;
+content.value = post.value.content;
+status.value = post.value.status;
+author_id.value = postauthor.value.id;
 
 // add post function
-const addPost = async () => {
-  const post = {
+const updatePost = async () => {
+  const editedPost = {
     title: title.value,
     content: content.value,
     status: status.value,
     author_id: author_id.value,
   };
 
-  // calling add post function from composables
-  await useFetchPost().addPost(post);
+  // calling update post function from composables
+  await useFetchPost().updatePost(id, editedPost);
   router.push("/");
 
   title.value = "";
@@ -29,11 +49,11 @@ const addPost = async () => {
 </script>
 
 <template>
-  <!-- Add New Post Page -->
+  <!-- Update Post Page -->
   <div class="max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden px-4">
-    <h2 class="text-2xl font-semibold text-center text-gray-700 py-4">Add New Post</h2>
+    <h2 class="text-2xl font-semibold text-center text-gray-700 py-4">Update Post</h2>
 
-    <form @submit.prevent="addPost">
+    <form @submit.prevent="updatePost">
       <!-- Title -->
       <div class="mb-4">
         <label for="title" class="block text-sm font-medium text-gray-600">Title</label>
@@ -71,8 +91,8 @@ const addPost = async () => {
           class="w-full mt-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         >
-          <option value="">Select an author</option>
-          <option v-for="author in data.data" :key="author.id" :value="author.id">
+          <!-- <option :value="postauthor.id">{{ postauthor }}</option> -->
+          <option v-for="author in authors.data" :key="author.id" :value="author.id">
             {{ author.name }}
           </option>
         </select>
@@ -115,7 +135,7 @@ const addPost = async () => {
           type="submit"
           class="bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-600 focus:outline-none"
         >
-          Submit
+          Update
         </button>
       </div>
     </form>

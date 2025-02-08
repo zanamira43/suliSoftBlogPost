@@ -26,6 +26,28 @@ export default () => {
     })
   }
 
+  // get single blog post by id ==> function
+  const getPost = async (id) => {
+    return await useFetch(`${APIURL}/blogs/${id}`, {
+      headers: {
+        'Accept': 'application/json',
+        'x-key': APIKEY
+      }
+    })
+  }
+
+  // update blog post by id ==> function
+  const updatePost = async (id, editedpost) => {
+    await $fetch(`${APIURL}/blogs/${id}`, {
+      method: 'PUT',
+      body: editedpost,
+      headers: {
+        'Accept': 'application/json',
+        'x-key': APIKEY
+      }
+    })
+  }
+
 
   // delete blog post by id ==> function
   const deletePost = async (id) => {
@@ -41,6 +63,8 @@ export default () => {
   return {
     addPost,
     getPosts,
+    getPost,
+    updatePost,
     deletePost
   }
 }

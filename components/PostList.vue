@@ -29,7 +29,7 @@ const openDeleteModal = (id) => {
           {{ post.status }}
         </td>
         <td class="py-3 px-4 text-sm flex gap-3">
-          <NuxtLink :to="`${post.id}/update`">
+          <NuxtLink :to="`/update-post/${post.id}`">
             <Icon name="material-symbols:edit" size="20" class="text-green-500" />
           </NuxtLink>
           <button @click="openDeleteModal(post.id)">
