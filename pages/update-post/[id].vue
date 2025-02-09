@@ -1,4 +1,7 @@
 <script setup>
+// getting api url & api key form run time config
+const { APIURL } = useURl();
+const { APIKEY } = useAPIKey();
 const router = useRouter();
 const route = useRoute();
 const id = route.params.id;
@@ -28,7 +31,9 @@ content.value = post.value.content;
 status.value = post.value.status;
 author_id.value = postauthor.value.id;
 
-// add post function
+const formErrors = ref({});
+
+// update blog post by id ==> function
 const updatePost = async () => {
   const editedPost = {
     title: title.value,
@@ -37,14 +42,22 @@ const updatePost = async () => {
     author_id: author_id.value,
   };
 
-  // calling update post function from composables
-  await useFetchPost().updatePost(id, editedPost);
-  router.push("/");
-
-  title.value = "";
-  content.value = "";
-  status.value = "";
-  author_id.value = "";
+  try {
+    await $fetch(`${APIURL}/blogs/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(editedPost),
+      headers: {
+        Accept: "application/json",
+        "x-key": APIKEY,
+      },
+    });
+    navigateTo("/");
+  } catch (error) {
+    if (error) {
+      // handle validation errors
+      formErrors.value = error.data?.errors;
+    }
+  }
 };
 </script>
 
@@ -127,6 +140,10 @@ const updatePost = async () => {
             <span class="ml-2">Unpublish</span>
           </label>
         </div>
+      </div>
+
+      <div class="mt-4 flex flex-row justify-center items-center" v-if="formErrors">
+        <ErrorMessage :errorMessage="formErrors[0]" />
       </div>
 
       <!-- Submit Button -->

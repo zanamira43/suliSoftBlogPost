@@ -4,29 +4,6 @@ export default () => {
   const {APIURL} = useURl()
   const {APIKEY} = useAPIKey()
 
-  // error use states
-  const validateError = ref("")
-
-  
-  // adding new post to API backend
-  const addPost = async (post) => {
-    try {
-      await $fetch(`${APIURL}/blogs`, {
-        method: 'POST',
-        body: post,   
-        headers: {
-          'Accept': 'application/json',
-          'x-key': APIKEY
-        } 
-      })
-      navigateTo('/')
-    }catch(error){    
-      validateError.value = error?.response?._data.errors[0]
-      // contentError.value = error?.response?._data.errors[1]
-      // console.log(titleError.value, contentError.value)
-      
-    }
-  }
 
   // getting list of blog posts function
   const getPosts = async () => {    
@@ -48,17 +25,7 @@ export default () => {
     })
   }
 
-  // update blog post by id ==> function
-  const updatePost = async (id, editedpost) => {
-    await $fetch(`${APIURL}/blogs/${id}`, {
-      method: 'PUT',
-      body: editedpost,
-      headers: {
-        'Accept': 'application/json',
-        'x-key': APIKEY
-      }
-    })
-  }
+ 
 
 
   // delete blog post by id ==> function
@@ -73,11 +40,9 @@ export default () => {
   }
 
   return {
-    addPost,
     getPosts,
     getPost,
-    updatePost,
     deletePost,
-    validateError
+  
   }
 }

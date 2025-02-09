@@ -1,4 +1,7 @@
 <script setup>
+// getting api url & api key form run time config
+const { APIURL } = useURl();
+const { APIKEY } = useAPIKey();
 const title = ref("");
 const content = ref("");
 const status = ref("");
@@ -7,7 +10,7 @@ const author_id = ref(0);
 // calling  authors composables function
 const { data } = await useFetchAuthors().getAuthors();
 
-const { validateError } = await useFetchPost();
+const formErrors = ref({});
 
 // add post function
 const addPost = async () => {
@@ -18,15 +21,26 @@ const addPost = async () => {
     author_id: author_id.value,
   };
 
-  // calling add post function from composabless
-  await useFetchPost().addPost(post);
-
+  try {
+    await $fetch(`${APIURL}/blogs`, {
+      method: "POST",
+      body: post,
+      headers: {
+        Accept: "application/json",
+        "x-key": APIKEY,
+      },
+    });
+    navigateTo("/");
+  } catch (error) {
+    if (error) {
+      // handle validation errors
+      formErrors.value = error.data?.errors;
+    }
+  }
   title.value = "";
   content.value = "";
   status.value = "";
   author_id.value = "";
-
-  // router.push("/"); // redirect to home page
 };
 </script>
 
@@ -111,9 +125,8 @@ const addPost = async () => {
         </div>
       </div>
 
-      <div class="mb-4 flex flex-row justify-center items-center" v-if="validateError">
-        <!-- <ErrorMessage :errorMessage="validateError" class="mt-2" /> -->
-        <p class="text-red-500 text-sm mt-2">{{ validateError }}</p>
+      <div class="mt-4 flex flex-row justify-center items-center">
+        <ErrorMessage :errorMessage="formErrors[0]" />
       </div>
 
       <!-- Submit Button -->
