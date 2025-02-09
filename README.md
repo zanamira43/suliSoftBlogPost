@@ -2,7 +2,8 @@
 
 # suliSoftBlogPost
 
-#Description
+# Description
+
 This is a Nuxt.js project that leverages the power of Nuxt.js for server-side rendering and routing, with Tailwind CSS integrated for modern, responsive, and customizable styling.
 
 ## Setup
