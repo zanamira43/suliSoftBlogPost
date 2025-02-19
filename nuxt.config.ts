@@ -3,6 +3,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
 
+
   app: {
     head: {
       charset: "utf-8",
@@ -17,6 +18,7 @@ export default defineNuxtConfig({
     public:{
       API_KEY: process.env.Blog_API_KEY,
       API_URL: process.env.Blog_API_URL
+
     },
   },
 

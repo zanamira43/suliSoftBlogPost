@@ -50,48 +50,23 @@ const addPost = async () => {
     <h2 class="text-2xl font-semibold text-center text-gray-700 py-4">Add New Post</h2>
 
     <form @submit.prevent="addPost">
-      <!-- Title -->
+      <!-- title -->
+       <div class="mb-4">
+        <FormLabel for="title" Title="Title" />
+        <FormInput Title="Title" type="text" name="title" v-model="title" />
+       </div>
+       
+       <!-- Content -->
       <div class="mb-4">
-        <label for="title" class="block text-sm font-medium text-gray-600">Title</label>
-        <input
-          type="text"
-          name="title"
-          v-model="title"
-          class="w-full mt-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
-        />
+        <FormLabel for="content" Title="Content" />
+        <FormTextArea Title="Content" name="content" v-model="content" rows="5" />
       </div>
-
-      <!-- Content -->
+     
+       
+       <!-- Author -->
       <div class="mb-4">
-        <label for="content" class="block text-sm font-medium text-gray-600"
-          >Content</label
-        >
-        <textarea
-          id="content"
-          name="content"
-          v-model="content"
-          rows="5"
-          class="w-full mt-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
-        ></textarea>
-      </div>
-
-      <!-- Author -->
-      <div class="mb-4">
-        <label for="author" class="block text-sm font-medium text-gray-600">Author</label>
-        <select
-          id="author"
-          name="author"
-          v-model="author_id"
-          class="w-full mt-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
-        >
-          <option value="">Select an author</option>
-          <option v-for="author in data.data" :key="author.id" :value="author.id">
-            {{ author.name }}
-          </option>
-        </select>
+        <FormLabel for="authors" Title="Authors" />
+        <FormSelect Title="Authors" name="authors" :authors="data.data" v-model="author_id" />
       </div>
 
       <!-- Status -->
@@ -99,28 +74,12 @@ const addPost = async () => {
         <span class="block text-sm font-medium text-gray-600">Status</span>
         <div class="flex items-center space-x-6">
           <label class="inline-flex items-center text-sm text-gray-600">
-            <input
-              type="radio"
-              id="publish"
-              name="status"
-              v-model="status"
-              value="published"
-              class="form-radio text-blue-500"
-              required
-            />
-            <span class="ml-2">Publish</span>
+            <FormInput type="radio" id="publish" name="status" v-model="status" value="published" class="form-radio text-blue-500" />
+            <FormLabel class="ml-2 font-normal" Title="Publish" />
           </label>
           <label class="inline-flex items-center text-sm text-gray-600">
-            <input
-              type="radio"
-              id="unpublish"
-              name="status"
-              v-model="status"
-              value="unpublished"
-              class="form-radio text-blue-500"
-              required
-            />
-            <span class="ml-2">Unpublish</span>
+            <FormInput type="radio" id="unpublish" name="status" v-model="status" value="unpulished" class="form-radio text-blue-500" />
+            <FormLabel class="ml-2 font-normal" Title="Unpublish" />
           </label>
         </div>
       </div>

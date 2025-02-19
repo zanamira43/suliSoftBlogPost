@@ -34,10 +34,9 @@ const deletePost = async (id) => {
           class="border border-gray-300 rounded-md px-4 py-2"
           v-model="statusFilter"
         >
-          <option value="all">All Statuses</option>
-          <option v-for="post in data.data" :key="post.id" :value="post.status">
-            {{ post.status }}
-          </option>
+        <option value="all">All Statuses</option>
+        <option value="published">Published</option>
+        <option value="unpublished">Unpublished</option>
         </select>
       </div>
     </div>
